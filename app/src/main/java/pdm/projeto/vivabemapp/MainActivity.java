@@ -8,6 +8,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.card.MaterialCardView;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -20,5 +22,20 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // 2. Encontre o card pelo ID definido no XML
+        MaterialCardView card = findViewById(R.id.card);
+
+        // 3. Configure o clique longo em Java correto
+        card.setOnLongClickListener(v -> {
+            // Alterna o estado de checado
+            boolean novoEstado = !card.isChecked();
+            card.setChecked(novoEstado);
+
+            // Retorna true indicando que o clique longo foi consumido
+            return true;
+        });
+
+        // falta o padrão init do prof, resolver!!
     }
 }
