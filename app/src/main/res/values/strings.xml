@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">Viva Bem App</string>
+    <string name="app_name">Viva Bem</string>
+
+    <!-- Cabeçalho -->
+    <string name="welcome_message">Bem vinda!</string>
+    <string name="user_name">Maria</string>
+    <string name="current_date">Segunda-feira, 21 de setembro de 2026</string>
+
+    <!-- Botões gerais -->
+    <string name="emergency_button">Emergência — 112</string>
+    <string name="play_medication_sound">Tocar ao tomar</string>
+    <string name="play_medication_check">Tomado</string>
+
+    <!-- Seção de Remédios -->
+    <string name="section_medicines">Remédios de hoje</string>
+    <string name="medicine_time_1">08:00</string>
+    <string name="medicine_name_1">Losartana</string>
+    <string name="medicine_dosage_1">50 mg - 1 comprimido</string>
+
+    <!-- Seção de Consultas -->
+    <string name="section_appointments">Consultas</string>
+    <string name="appointment_alert">Hoje você tem consulta!</string>
+    <string name="appointment_details">14:00 — Cardiologista com Dr. Exemplo</string>
+    <string name="appointment_location">Clínica da cidade — Sala 3</string>
 </resources>

@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Neutros / Tons de Cinzento -->
+    <color name="black">#1A1A1A</color>
+    <color name="black_2">#4A4A4A</color>
+    <color name="grey_1">#747474</color>
+    <color name="grey_2">#929292</color>
+    <color name="grey_3">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Cores Principais -->
+    <color name="primary">#00C3D0</color>
+    <color name="secondary">#DE7254</color>
+
+    <!-- Cores de Destaque / Acento -->
+    <color name="accents_green">#34C759</color>
+    <color name="accents_green_claro">#EBFFEE</color>
+    <color name="accents_red">#FF383C</color>
+    <color name="accents_red1">#EEC1B4</color>
+
+
+    <!-- Cores padrão do sistema necessárias para o tema -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 </resources>
