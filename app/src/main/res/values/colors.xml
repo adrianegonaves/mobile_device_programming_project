@@ -14,7 +14,10 @@
 
     <!-- Cores de Destaque / Acento -->
     <color name="accents_green">#34C759</color>
+    <color name="accents_green_claro">#EBFFEE</color>
     <color name="accents_red">#FF383C</color>
+    <color name="accents_red1">#EEC1B4</color>
+
 
     <!-- Cores padrão do sistema necessárias para o tema -->
     <color name="purple_200">#FFBB86FC</color>
