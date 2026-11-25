@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Itens da barra de navegação inferior (Bottom Navigation) -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/idNavHome"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/idNavMedicines"
+        android:icon="@drawable/ic_pill"
+        android:title="@string/nav_medicines" />
+    <item
+        android:id="@+id/idNavAppointments"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/nav_appointments" />
+    <item
+        android:id="@+id/idNavStock"
+        android:icon="@drawable/ic_box"
+        android:title="@string/nav_stock" />
+    <item
+        android:id="@+id/idNavProfile"
+        android:icon="@drawable/ic_person"
+        android:title="@string/nav_profile" />
+</menu>
