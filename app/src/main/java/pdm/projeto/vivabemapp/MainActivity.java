@@ -1,9 +1,13 @@
 package pdm.projeto.vivabemapp;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -19,7 +23,6 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity {
     // membros de dados
     TextView mTvCurrentDate;
@@ -32,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     Button mBtnTakeMedicine;
     MaterialCardView mCardAppointment;
     TextView mTvMedicineCounter;
+
+    // barra de navegação nativa
+    LinearLayout mCustomBottomNav;
+    List<View> mNavTabViews;
 
     VivaBemUtil mUtil;
 
@@ -83,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             mUtil.fb("Medicamento desmarcado!");
         }
     }
+
     void atualizarEstadoRemedio() {
         if (mIsTomado) {
             String textPlayMedicatioCheck = ContextCompat.getString(this, R.string.play_medication_check);
@@ -91,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             int corVerde = ContextCompat.getColor(this, R.color.accents_green);
             int corVerdeClaro = ContextCompat.getColor(this, R.color.accents_green_claro);
 
-            // FORMA CORRETA para MaterialButton:
             mBtnTakeMedicine.setBackgroundTintList(android.content.res.ColorStateList.valueOf(corVerde));
 
             mCardMedication.setCardBackgroundColor(corVerdeClaro);
@@ -108,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             int corPrimary = ContextCompat.getColor(this, R.color.primary);
             int corGrey_3 = ContextCompat.getColor(this, R.color.grey_3);
 
-            // FORMA CORRETA para MaterialButton:
             mBtnTakeMedicine.setBackgroundTintList(android.content.res.ColorStateList.valueOf(corPrimary));
 
             mBtnTakeMedicine.setTextColor(corTextoPadrao);
@@ -120,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             mRbMedicineCheck.setBackground(null);
         }
     }
+
     void atualizarContador() {
         if (mListaMedicamentosMock == null || mListaMedicamentosMock.isEmpty()) {
             mTvMedicineCounter.setText("0 de 0");
@@ -129,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
         int totalMedicamentos = mListaMedicamentosMock.size();
         int tomados = 0;
 
-        // Conta quantos medicamentos estão marcados como tomados na lista
         for (Medicamento med : mListaMedicamentosMock) {
             if (med.isTomado()) {
                 tomados++;
@@ -139,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         String textoContador = tomados + " de " + totalMedicamentos;
         mTvMedicineCounter.setText(textoContador);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         init();
+        setupCustomBottomNav(R.menu.bottom_nav_menu);
         carregarDadosMock();
 
     } // onCreate
@@ -169,13 +177,14 @@ public class MainActivity extends AppCompatActivity {
         mBtnTakeMedicine = findViewById(R.id.idBtnTakeMedicine);
         mCardAppointment = findViewById(R.id.idCardAppointment);
         mTvMedicineCounter = findViewById(R.id.idTvMedicineCounter);
-
+        mCustomBottomNav = findViewById(R.id.idCustomBottomNav);
 
         Object[] aRelevant = {
                 mTvCurrentDate, mBtnEmergency,
                 mCardMedication, mRbMedicineCheck,
                 mTvMedicineTime, mTvMedicineName, mTvMedicineDosage,
-                mBtnTakeMedicine, mCardAppointment, mTvMedicineCounter
+                mBtnTakeMedicine, mCardAppointment, mTvMedicineCounter,
+                mCustomBottomNav
         };
 
         for (Object o : aRelevant) {
@@ -193,18 +202,14 @@ public class MainActivity extends AppCompatActivity {
         mBtnEmergency.setOnClickListener(mBtnClickHandler);
         mBtnTakeMedicine.setOnClickListener(mBtnClickHandler);
 
-        // comportamento para alternar o estado do RadioButton ao clicar nele
         mRbMedicineCheck.setOnClickListener(v -> {
             boolean checked = mRbMedicineCheck.isChecked();
             String msg = String.format(
                     "Medicamento checado: " + checked
             );
             mUtil.fb(msg);
-
-
         });
 
-        // comportamento para clique longo no cartão de medicamento
         mCardMedication.setOnLongClickListener(v -> {
             boolean novoEstado = !mCardMedication.isChecked();
             mCardMedication.setChecked(novoEstado);
@@ -212,13 +217,46 @@ public class MainActivity extends AppCompatActivity {
         });
     } // init
 
+    void setupCustomBottomNav(int menuResId) {
+        PopupMenu popupMenu = new PopupMenu(this, mCustomBottomNav);
+        getMenuInflater().inflate(menuResId, popupMenu.getMenu());
+        Menu menu = popupMenu.getMenu();
+
+        mNavTabViews = new ArrayList<>();
+
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem menuItem = menu.getItem(i);
+            View itemView = getLayoutInflater().inflate(R.layout.item_bottom_nav, mCustomBottomNav, false);
+
+            ImageView ivIcon = itemView.findViewById(R.id.idNavIcon);
+            TextView tvTitle = itemView.findViewById(R.id.idNavTitle);
+
+            ivIcon.setImageDrawable(menuItem.getIcon());
+            tvTitle.setText(menuItem.getTitle());
+
+            final int itemId = menuItem.getItemId();
+            itemView.setOnClickListener(v -> {
+                for (View tab : mNavTabViews) {
+                    tab.setSelected(false);
+                }
+                itemView.setSelected(true);
+            });
+
+            // Deixa a primeira aba ("Hoje") selecionada por padrão
+            if (i == 0) {
+                itemView.setSelected(true);
+            }
+
+            mNavTabViews.add(itemView);
+            mCustomBottomNav.addView(itemView);
+        }
+    }
 
     void carregarDadosMock() {
         mListaMedicamentosMock = new ArrayList<>();
 
         mListaMedicamentosMock.add(new Medicamento("08:00", "Losartana", "50 mg — 1 comprimido", false));
         mListaMedicamentosMock.add(new Medicamento("12:00", "Paracetamol", "750 mg — 1 comprimido", false));
-
 
         if (!mListaMedicamentosMock.isEmpty()) {
             Medicamento med = mListaMedicamentosMock.get(0);
@@ -229,7 +267,6 @@ public class MainActivity extends AppCompatActivity {
             atualizarEstadoRemedio();
         }
 
-        // Atualiza a contagem inicial com base no tamanho da lista
         atualizarContador();
     }
 } // MainActivity

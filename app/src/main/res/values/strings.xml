@@ -22,4 +22,11 @@
     <string name="appointment_alert">Hoje você tem consulta!</string>
     <string name="appointment_details">14:00 — Cardiologista com Dr. Exemplo</string>
     <string name="appointment_location">Clínica da cidade — Sala 3</string>
+
+    <!-- Barra de Navegação -->
+    <string name="nav_home">Hoje</string>
+    <string name="nav_medicines">Remédios</string>
+    <string name="nav_appointments">Consultas</string>
+    <string name="nav_stock">Estoque</string>
+    <string name="nav_profile">Perfil</string>
 </resources>

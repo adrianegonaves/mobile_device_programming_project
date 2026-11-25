@@ -11,7 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/idNavDivider"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -256,4 +256,9 @@
 
     </ScrollView>
 
+    <!-- Adiciona o container da barra-->
+
+    <View android:background="#EEEEEE" android:id="@+id/idNavDivider" android:layout_height="1dp" android:layout_width="match_parent" app:layout_constraintBottom_toTopOf="@id/idCustomBottomNav"/>
+
+    <LinearLayout android:background="@color/white" android:baselineAligned="false" android:id="@+id/idCustomBottomNav" android:layout_height="64dp" android:layout_width="match_parent" android:orientation="horizontal" app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
