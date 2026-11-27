@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_respond_ymd.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RespondYMD">
+
+    <!-- horizontal container of 3 vertical containers
+    each containing a TextView (a label) and a NumberPicker
+    -->
+    <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/idLLNPs"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:id="@+id/idLLY"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:text="@string/str_label_y"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <NumberPicker
+                android:id="@+id/idNPYear"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:id="@+id/idLLM"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:text="@string/str_label_m"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <NumberPicker
+                android:id="@+id/idNPMonth"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:id="@+id/idLLD"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:text="@string/str_label_d"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <NumberPicker
+                android:id="@+id/idNPDay"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@id/idLLNPs"
+        android:id="@+id/idBtnConfirm"
+        android:text="@string/str_btn_confirm"
+        android:layout_width="match_parent"
+        android:radius="10dp"
+        android:layout_height="54dp"
+        app:cornerRadius="12dp"/>
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@id/idBtnConfirm"
+        android:id="@+id/idBtnCancel"
+        android:text="@string/str_btn_cancel"
+        android:layout_width="match_parent"
+        android:radius="10dp"
+        android:layout_height="54dp"
+        app:cornerRadius="12dp"/>
+
+
+
+    <ListView
+        app:layout_constraintTop_toBottomOf="@id/idBtnCancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/idLvFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

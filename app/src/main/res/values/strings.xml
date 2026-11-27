@@ -29,4 +29,29 @@
     <string name="nav_appointments">Consultas</string>
     <string name="nav_stock">Estoque</string>
     <string name="nav_profile">Perfil</string>
+
+    <string name="str_medicine_name">Nome do remédio</string>
+    <string name="str_hint_medicine_name">Ex.: Losartana</string>
+    <string name="str_medicine_note">Observação (opcional)</string>
+    <string name="str_hint_medicine_note">Ex.: Tomar depois do café</string>
+    <string name="str_label_date">Data</string>
+    <string name="str_pick_date">Selecione a data</string>
+    <string name="str_label_frequency">Frequência</string>
+    <string name="str_pick_frequency">Selecione Frequência</string>
+    <string name="str_label_dose">Dose</string>
+    <string name="str_pick_dose">Selecione a dose</string>
+    <string name="str_label_time">Horário</string>
+    <string name="str_pick_time">Selecione o horário</string>
+    <string name="str_label_y">Ano</string>
+    <string name="str_label_m">Mês</string>
+    <string name="str_label_d">Dia</string>
+    <string name="str_btn_confirm">Confirmar a Data</string>
+    <string name="str_btn_cancel">Cancelar</string>
+    <string name="str_btn_save">Salvar</string>
+    <string name="str_label_hour">Hora</string>
+    <string name="str_label_minute">Minuto</string>
+    <string name="str_label_qty">Quantidade</string>
+    <string name="str_label_unit">Unidade</string>
+    <string name="str_hint_dose">Ex.: 2 gotas</string>
+    <string name="str_title_dose">Selecione a dose</string>
 </resources>
