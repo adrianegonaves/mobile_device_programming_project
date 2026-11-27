@@ -1,13 +1,9 @@
 package pdm.projeto.vivabemapp;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -38,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
     // barra de navegação nativa
     LinearLayout mCustomBottomNav;
-    List<View> mNavTabViews;
 
     VivaBemUtil mUtil;
 
@@ -56,27 +51,27 @@ public class MainActivity extends AppCompatActivity {
             boolean bBtnPlaySound = pView.getId() == R.id.idBtnTakeMedicine;
 
             if (bBtnEmergency) {
-                respondBtnEmergency();
+                actionEmergency();
             } else if (bBtnPlaySound) {
-                respondBtnTakeMedicine();
+                actionTakeMedicine();
             }
         } // onClick
     }; // mBtnClickHandler
 
-    void respondBtnEmergency() {
+    void actionEmergency() {
         String msg = String.format(
                 "Botão de emergência clicado"
         );
         mUtil.fb(msg);
     }
 
-    void respondBtnTakeMedicine() {
+    void actionTakeMedicine() {
         // 1. Inverte o estado booleano local
         mIsTomado = !mIsTomado;
 
         // 2. Sincroniza o estado no objeto da lista mock
         if (mListaMedicamentosMock != null && !mListaMedicamentosMock.isEmpty()) {
-            mListaMedicamentosMock.get(0).setTomado(mIsTomado);
+            mListaMedicamentosMock.get(0).mTomado = mIsTomado;
         }
 
         // 3. Atualiza os componentes visuais do card e o contador no topo
@@ -137,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         int tomados = 0;
 
         for (Medicamento med : mListaMedicamentosMock) {
-            if (med.isTomado()) {
+            if (med.mTomado) {
                 tomados++;
             }
         }
@@ -151,21 +146,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        mUtil = new VivaBemUtil(this);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+                findViewById(R.id.main),
+                new androidx.core.view.OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                        return insets;
+                    }
+                }
+        );
 
         init();
-        setupCustomBottomNav(R.menu.bottom_nav_menu);
-        carregarDadosMock();
 
     } // onCreate
 
+
     // padrão init
     void init() {
+        mUtil = new VivaBemUtil(this);
         // inicialização dos membros de dados
         mTvCurrentDate = findViewById(R.id.idTvCurrentDate);
         mBtnEmergency = findViewById(R.id.idBtnEmergency);
@@ -179,12 +180,13 @@ public class MainActivity extends AppCompatActivity {
         mTvMedicineCounter = findViewById(R.id.idTvMedicineCounter);
         mCustomBottomNav = findViewById(R.id.idCustomBottomNav);
 
+
         Object[] aRelevant = {
                 mTvCurrentDate, mBtnEmergency,
                 mCardMedication, mRbMedicineCheck,
                 mTvMedicineTime, mTvMedicineName, mTvMedicineDosage,
                 mBtnTakeMedicine, mCardAppointment, mTvMedicineCounter,
-                mCustomBottomNav
+                mCustomBottomNav,
         };
 
         for (Object o : aRelevant) {
@@ -202,55 +204,29 @@ public class MainActivity extends AppCompatActivity {
         mBtnEmergency.setOnClickListener(mBtnClickHandler);
         mBtnTakeMedicine.setOnClickListener(mBtnClickHandler);
 
-        mRbMedicineCheck.setOnClickListener(v -> {
-            boolean checked = mRbMedicineCheck.isChecked();
-            String msg = String.format(
-                    "Medicamento checado: " + checked
-            );
-            mUtil.fb(msg);
-        });
-
-        mCardMedication.setOnLongClickListener(v -> {
-            boolean novoEstado = !mCardMedication.isChecked();
-            mCardMedication.setChecked(novoEstado);
-            return true;
-        });
-    } // init
-
-    void setupCustomBottomNav(int menuResId) {
-        PopupMenu popupMenu = new PopupMenu(this, mCustomBottomNav);
-        getMenuInflater().inflate(menuResId, popupMenu.getMenu());
-        Menu menu = popupMenu.getMenu();
-
-        mNavTabViews = new ArrayList<>();
-
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem menuItem = menu.getItem(i);
-            View itemView = getLayoutInflater().inflate(R.layout.item_bottom_nav, mCustomBottomNav, false);
-
-            ImageView ivIcon = itemView.findViewById(R.id.idNavIcon);
-            TextView tvTitle = itemView.findViewById(R.id.idNavTitle);
-
-            ivIcon.setImageDrawable(menuItem.getIcon());
-            tvTitle.setText(menuItem.getTitle());
-
-            final int itemId = menuItem.getItemId();
-            itemView.setOnClickListener(v -> {
-                for (View tab : mNavTabViews) {
-                    tab.setSelected(false);
-                }
-                itemView.setSelected(true);
-            });
-
-            // Deixa a primeira aba ("Hoje") selecionada por padrão
-            if (i == 0) {
-                itemView.setSelected(true);
+        mRbMedicineCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View pView) {
+                boolean bChecked = mRbMedicineCheck.isChecked();
+                String msg = String.format(
+                        "Medicamento checado: " + bChecked
+                );
+                mUtil.fb(msg);
             }
+        });
 
-            mNavTabViews.add(itemView);
-            mCustomBottomNav.addView(itemView);
-        }
-    }
+        mCardMedication.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View pView) {
+                boolean bNovoEstado = !mCardMedication.isChecked();
+                mCardMedication.setChecked(bNovoEstado);
+                return true;
+            }
+        });
+
+        BottomNav.setup(this, mCustomBottomNav, R.id.idNavHome);
+        carregarDadosMock();
+    } // init
 
     void carregarDadosMock() {
         mListaMedicamentosMock = new ArrayList<>();
@@ -260,10 +236,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (!mListaMedicamentosMock.isEmpty()) {
             Medicamento med = mListaMedicamentosMock.get(0);
-            mTvMedicineTime.setText(med.getHora());
-            mTvMedicineName.setText(med.getNome());
-            mTvMedicineDosage.setText(med.getDosagem());
-            mIsTomado = med.isTomado();
+            mTvMedicineTime.setText(med.mHora);
+            mTvMedicineName.setText(med.mNome);
+            mTvMedicineDosage.setText(med.mDosagem);
+            mIsTomado = med.mTomado;
             atualizarEstadoRemedio();
         }
 
