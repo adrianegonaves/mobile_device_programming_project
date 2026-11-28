@@ -42,6 +42,7 @@ public class BottomNav {
                     boolean bSame = itemId == selectedItemId;
                     boolean bHome = itemId == R.id.idNavHome;
                     boolean bMedicines = itemId == R.id.idNavMedicines;
+                    boolean bAppointments = itemId == R.id.idNavAppointments;
 
                     if (bSame) {
                         return;
@@ -53,6 +54,9 @@ public class BottomNav {
                     }
                     if (bMedicines) {
                         destino = MyMedicineActivity.class;
+                    }
+                    if (bAppointments) {
+                        destino = MyAppointmentActivity.class;
                     }
 
                     if (destino != null) {

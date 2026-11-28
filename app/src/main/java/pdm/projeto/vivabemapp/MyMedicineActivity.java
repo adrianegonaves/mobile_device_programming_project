@@ -2,6 +2,11 @@ package pdm.projeto.vivabemapp;
 
 import android.os.Bundle;
 import android.widget.Button;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +34,20 @@ public class MyMedicineActivity extends AppCompatActivity {
     ImageButton mIbDeleteMedicine;
     LinearLayout mCustomBottomNav;
 
+    ActivityResultLauncher<Intent> arlForAddMedicine =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult o) {
+                            boolean bConfirm = o.getResultCode() == RESULT_OK;
+                            if (bConfirm) {
+                                receiveMedicine(o.getData());
+                            }
+                        }
+                    }
+            );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,17 +67,48 @@ public class MyMedicineActivity extends AppCompatActivity {
         @Override
         public void onClick(View pView) {
             boolean bAdd = pView.getId() == R.id.idBtnAddMedicine;
+            boolean bDelete = pView.getId() == R.id.idIbDeleteMedicine;
+
             if (bAdd) actionAddMedicine();
+            if (bDelete) actionDeleteMedicine();
         }
     };
+
+    void actionDeleteMedicine() {
+        mCardMedication.setVisibility(View.GONE);
+        mUtil.fb(getString(R.string.str_msg_medicine_deleted));
+    }//actionDeleteMedicine
 
     void actionAddMedicine() {
         Intent goForm = new Intent(
                 MyMedicineActivity.this,
                 AddMedicineActivity.class
         );
-        startActivity(goForm);
+        arlForAddMedicine.launch(goForm);
     }
+
+    void receiveMedicine(Intent pData) {
+        boolean bHasData = pData != null;
+        if (!bHasData) {
+            return;
+        }
+
+        boolean bName = pData.hasExtra(AddMedicineActivity.KEY_NAME);
+        boolean bDose = pData.hasExtra(AddMedicineActivity.KEY_DOSE);
+        boolean bTime = pData.hasExtra(AddMedicineActivity.KEY_TIME);
+
+        mCardMedication.setVisibility(View.VISIBLE);
+
+        if (bName) {
+            mTvMedicineTime.setText(pData.getStringExtra(AddMedicineActivity.KEY_NAME));
+        }
+        if (bDose) {
+            mTvMedicineDosage.setText(pData.getStringExtra(AddMedicineActivity.KEY_DOSE));
+        }
+        if (bTime) {
+            mBtnTakeMedicine.setText(pData.getStringExtra(AddMedicineActivity.KEY_TIME));
+        }
+    }//receiveMedicine
 
     void init () {
         mUtil = new VivaBemUtil(this);
@@ -92,6 +142,7 @@ public class MyMedicineActivity extends AppCompatActivity {
 
         BottomNav.setup(this, mCustomBottomNav, R.id.idNavMedicines);
         mBtnAddMedicine.setOnClickListener(mBtnHandler);
+        mIbDeleteMedicine.setOnClickListener(mBtnHandler);
     }
 
 }

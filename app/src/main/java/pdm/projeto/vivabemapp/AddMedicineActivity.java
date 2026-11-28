@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,8 +27,13 @@ import java.util.Calendar;
 
 public class AddMedicineActivity extends AppCompatActivity {
 
+    public static final String KEY_NAME = "KEY_NAME";
+    public static final String KEY_DOSE = "KEY_DOSE";
+    public static final String KEY_TIME = "KEY_TIME";
+
     // membros de dados
     VivaBemUtil mUtil;
+    Button mBtnSaveMedicine;
     EditText mEtMedicineName;
     EditText mEtMedicineNote;
     MaterialCardView mCardDate;
@@ -157,13 +163,38 @@ public class AddMedicineActivity extends AppCompatActivity {
             boolean bTime = pView.getId() == R.id.idCardTime;
             boolean bFrequency = pView.getId() == R.id.idCardFrequency;
             boolean bDose = pView.getId() == R.id.idCardDose;
+            boolean bSave = pView.getId() == R.id.idBtnSaveMedicine;
 
             if (bDate) handleGetDate();
             if (bTime) handleGetTime();
             if (bFrequency) handleGetFrequency();
             if (bDose) handleGetDose();
+            if (bSave) actionSaveMedicine();
         }
     };
+
+    void actionSaveMedicine() {
+        String name = mEtMedicineName.getText().toString().trim();
+        boolean bHasName = name.length() > 0;
+        if (!bHasName) {
+            mUtil.fb(getString(R.string.str_msg_fill_name));
+            return;
+        }
+
+        String dose = mTvDoseValue.getText().toString().trim();
+        String time = mTvTimeValue.getText().toString().trim();
+        boolean bDosePicked = !dose.equals(getString(R.string.str_pick_dose));
+        boolean bTimePicked = !time.equals(getString(R.string.str_pick_time));
+
+        Intent data = new Intent();
+        data.putExtra(KEY_NAME, name);
+        if (bDosePicked) data.putExtra(KEY_DOSE, dose);
+        if (bTimePicked) data.putExtra(KEY_TIME, time);
+
+        setResult(RESULT_OK, data);
+        mUtil.fb(getString(R.string.str_msg_medicine_saved));
+        finish();
+    }//actionSaveMedicine
 
     void handleGetDate() {
         Intent goRespondYMD = new Intent(
@@ -263,6 +294,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         mTvFrequencyValue = findViewById(R.id.idTvFrequencyValue);
         mCardDose = findViewById(R.id.idCardDose);
         mTvDoseValue = findViewById(R.id.idTvDoseValue);
+        mBtnSaveMedicine = findViewById(R.id.idBtnSaveMedicine);
         mCustomBottomNav = findViewById(R.id.idCustomBottomNav);
 
         Object[] aRelevant = {
@@ -271,6 +303,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 mCardTime, mTvTimeValue,
                 mCardFrequency, mTvFrequencyValue,
                 mCardDose, mTvDoseValue,
+                mBtnSaveMedicine,
                 mCustomBottomNav
         };
 
@@ -289,6 +322,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         mCardTime.setOnClickListener(mBtnHandler);
         mCardFrequency.setOnClickListener(mBtnHandler);
         mCardDose.setOnClickListener(mBtnHandler);
+        mBtnSaveMedicine.setOnClickListener(mBtnHandler);
         BottomNav.setup(this, mCustomBottomNav, R.id.idNavMedicines);
     }//init
 }//class AddMedicineActivity

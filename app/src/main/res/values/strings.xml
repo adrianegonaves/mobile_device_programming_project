@@ -18,6 +18,23 @@
     <string name="medicine_dosage_1">50 mg - 1 comprimido</string>
 
     <!-- Seção de Consultas -->
+    <string name="str_my_appointments">Minhas Consultas</string>
+    <string name="str_btn_schedule_appointment">Marcar consulta</string>
+    <string name="str_label_upcoming">Próximas</string>
+    <string name="str_no_appointment">Nenhuma consulta marcada</string>
+    <string name="str_appointment_specialty">Cardiologista</string>
+    <string name="str_appointment_doctor">Dr. Exemplo</string>
+    <string name="str_appointment_when">Segunda-feira, 21 de setembro de 2026 04:00</string>
+    <string name="str_appointment_place">Clínica da cidade — Sala 3</string>
+    <string name="str_delete_appointment">Excluir consulta</string>
+    <string name="str_msg_medicine_deleted">Remédio excluído</string>
+    <string name="str_msg_appointment_deleted">Consulta excluída</string>
+    <string name="str_label_specialty">Especialidade</string>
+    <string name="str_hint_specialty">Ex.: Cardiologista</string>
+    <string name="str_label_doctor">Médico</string>
+    <string name="str_hint_doctor">Ex.: Dr. Exemplo</string>
+    <string name="str_label_place">Local</string>
+    <string name="str_hint_place">Ex.: Clínica da cidade — Sala 3</string>
     <string name="section_appointments">Consultas</string>
     <string name="appointment_alert">Hoje você tem consulta!</string>
     <string name="appointment_details">14:00 — Cardiologista com Dr. Exemplo</string>
@@ -48,6 +65,11 @@
     <string name="str_btn_confirm">Confirmar a Data</string>
     <string name="str_btn_cancel">Cancelar</string>
     <string name="str_btn_save">Salvar</string>
+    <string name="str_msg_medicine_saved">Remédio salvo</string>
+    <string name="str_msg_appointment_saved">Consulta salva</string>
+    <string name="str_msg_appointment_not_saved">Não foi possível salvar a consulta</string>
+    <string name="str_msg_fill_name">Informe o nome do remédio</string>
+    <string name="str_msg_fill_specialty">Informe a especialidade</string>
     <string name="str_label_hour">Hora</string>
     <string name="str_label_minute">Minuto</string>
     <string name="str_label_qty">Quantidade</string>
